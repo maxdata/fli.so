@@ -10,17 +10,17 @@ export const handle: Handle = async ({ event, resolve }) => {
   const cookie = event.request.headers.get("cookie") || "";
   event.locals.pb.authStore.loadFromCookie(cookie);
 
-  try {
-    if (event.locals.pb.authStore.isValid) {
-      await event.locals.pb.collection("users").authRefresh();
-      event.locals.user = event.locals.pb.authStore.model;
-    } else {
-      console.log("Auth not valid");
-    }
-  } catch (error) {
-    console.error("Error refreshing auth:", error);
-    event.locals.pb.authStore.clear();
-  }
+  // try {
+  //   if (event.locals.pb.authStore.isValid) {
+  //     await event.locals.pb.collection("users").authRefresh();
+  //     event.locals.user = event.locals.pb.authStore.model;
+  //   } else {
+  //     console.log("Auth not valid");
+  //   }
+  // } catch (error) {
+  //   console.error("Error refreshing auth:", error);
+  //   event.locals.pb.authStore.clear();
+  // }
 
   const response = await resolve(event);
   const setCookie = event.locals.pb.authStore.exportToCookie({

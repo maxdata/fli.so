@@ -1,4 +1,4 @@
-import { stripe } from "./stripe";
+// import { stripe } from "./stripe";
 import type { UsersResponse } from "$lib/types";
 import { env } from "$env/dynamic/private";
 import { createInstance } from "$lib/pocketbase";
@@ -34,20 +34,20 @@ export async function createOrRetrieveStripeCustomer(user: UsersResponse) {
     }
 
     // Create new customer in Stripe
-    const stripeCustomer = await stripe.customers.create({
-      name: user.name,
-      email: user.email,
-      metadata: {
-        pocketbaseUserId: user.id,
-      },
-    });
+    // const stripeCustomer = await stripe.customers.create({
+    //   name: user.name,
+    //   email: user.email,
+    //   metadata: {
+    //     pocketbaseUserId: user.id,
+    //   },
+    // });
 
-    console.log("Stripe customer created successfully:", stripeCustomer.id);
+    // console.log("Stripe customer created successfully:", stripeCustomer.id);
 
     // Create customer record in PocketBase using authenticated client
     const customer = await pb.collection("customers").create({
       user_id: user.id,
-      stripe_customer_id: stripeCustomer.id,
+      stripe_customer_id: "test",
     });
 
     console.log("Customer record created in PocketBase:", customer.id);

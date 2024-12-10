@@ -24,31 +24,30 @@ export const actions: Actions = {
       return fail(400, { message: "Please provide both email and password." });
     }
 
-    try {
-      // Attempt to authenticate the user
-      const authData = await locals.pb
-        .collection("users")
-        .authWithPassword(email, password);
+    // try {
+    //   // Attempt to authenticate the user
+    //   const authData = await locals.pb
+    //     .collection("users")
+    //     .authWithPassword(email, password);
 
-      // Check if user is verified
-      if (!authData.record.verified) {
-        // Clear auth store since we don't want unverified users to remain logged in
-        locals.pb.authStore.clear();
-        
-        // Send another verification email
-        await locals.pb.collection("users").requestVerification(email);
-        
-        return fail(403, {
-          message: "Please verify your email address. A new verification email has been sent.",
-          unverified: true
-        });
-      }
-    } catch (err) {
-      // Handle authentication failure
-      return fail(401, {
-        message: "Login failed. Please check your email and password.",
-      });
-    }
+    //   // Remove verification check to allow login without email verification
+    //   // Comment or remove the following block to bypass the check
+    //   /*
+    //   if (!authData.record.verified) {
+    //     locals.pb.authStore.clear();
+    //     await locals.pb.collection("users").requestVerification(email);
+    //     return fail(403, {
+    //       message: "Please verify your email address. A new verification email has been sent.",
+    //       unverified: true
+    //     });
+    //   }
+    //   */
+    // } catch (err) {
+    //   // Handle authentication failure
+    //   return fail(401, {
+    //     message: "Login failed. Please check your email and password.",
+    //   });
+    // }
 
     // Redirect to the home page on successful login
     throw redirect(303, "/app");
